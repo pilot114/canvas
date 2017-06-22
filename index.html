@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>awesome life</title>
+</head>
+<body>
+	<div>
+		<h1>info:</h1>
+		<div id="info"></div>
+	</div>
+	<canvas id="canvas" style="width: 1400px; height: 700px; background-color: #ddd;"></canvas>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="./Helpers.js"></script>
+<script type="text/javascript" src="./Animation.js"></script>
+<script type="text/javascript" src="./Draw.js"></script>
+<script type="text/javascript" src="./Lifers.js"></script>
+<script type="text/javascript" src="./World.js"></script>
+<script type="text/javascript">
+
+function onLoadHandler() {
+	// подготавливаем канвас
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	canvas.width = 1400;
+	canvas.height = 700;
+
+	var fps = 60;
+
+	// генерим начальное состояние
+	var world = new World(canvas.width, canvas.height);
+	createLifers(world, "Grass", 20);
+	createLifers(world, "Cow", 10);
+	createLifers(world, "Wolf", 5);
+
+	var infoElement = $('#info');
+	// "шаг" обработки мира
+	var step = function() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		world.update();
+		world.draw(context);
+
+		// можно добавлять объекты динамически
+		// createLifers(world, "Grass", 3);
+		// createLifers( world, "Cow", 2);
+		// createLifers( world, "Wolf", 1);
+
+		infoElement.text(JSON.stringify({
+			tick: world.tick,
+			totalCount: world.state.length,
+			total: uniqTypes(world.state)
+		}));
+	};
+
+	// рендерим, используя requestAnimationFrame
+	var now;
+	var then = Date.now();
+	var interval = 1000/fps;
+	var delta;
+
+	function draw() {
+	    requestAnimationFrame(draw);
+	    now = Date.now();
+	    delta = now - then;
+	     
+	    if (delta > interval) {
+	        then = now - (delta % interval);
+	        step(now);
+	    }
+	}
+	draw();
+}
+
+window.onload = onLoadHandler;
+
+</script>
+</html>
