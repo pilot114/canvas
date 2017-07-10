@@ -26,8 +26,14 @@ function World(width, height) {
 		}, object);
 	}
 
-	this.getNear = function(object) {
-		
+	this.getNear = function(lifer) {
+		this.state = this.state.map(function(object){
+			var dx = object.x - this.x;
+			var dy = object.y - this.y;
+			if (Math.sqrt(dx*dx + dy*dy) > object.radiusView) {
+				// TODO
+			}
+		}, lifer);
 	}
 
 	this.update = function(time) {
