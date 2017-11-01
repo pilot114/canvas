@@ -16,7 +16,6 @@
   crossorigin="anonymous"></script>
 <script type="text/javascript" src="./Helpers.js"></script>
 <script type="text/javascript" src="./Animation.js"></script>
-<script type="text/javascript" src="./Draw.js"></script>
 <script type="text/javascript" src="./Lifers.js"></script>
 <script type="text/javascript" src="./World.js"></script>
 <script type="text/javascript">
@@ -32,15 +31,21 @@ function onLoadHandler() {
 
 	// генерим начальное состояние
 	var world = new World(canvas.width, canvas.height);
-	createLifers(world, "Grass", 20);
-	createLifers(world, "Cow", 10);
-	createLifers(world, "Wolf", 5);
+	createLifers(world, "Wolf", 3);
 
 	var infoElement = $('#info');
+
+	// рендерим, используя requestAnimationFrame
+	var now;
+	var start = Date.now();
+	var then = Date.now();
+	var interval = 1000/fps;
+	var delta;
+
 	// "шаг" обработки мира
-	var step = function() {
+	var step = function(now) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		world.update();
+		world.update(now);
 		world.draw(context);
 
 		// можно добавлять объекты динамически
@@ -48,19 +53,14 @@ function onLoadHandler() {
 		// createLifers( world, "Cow", 2);
 		// createLifers( world, "Wolf", 1);
 
-		infoElement.text(JSON.stringify({
-			tick: world.tick,
-			totalCount: world.state.length,
-			total: uniqTypes(world.state)
-		}));
+		infoElement.text(JSON.stringify(world));
+		// infoElement.text(JSON.stringify({
+		// 	tick: world,
+		// 	time: world.time,
+		// 	totalCount: world.state.length,
+		// 	total: uniqTypes(world.state)
+		// }));
 	};
-
-	// рендерим, используя requestAnimationFrame
-	var now;
-	var then = Date.now();
-	var interval = 1000/fps;
-	var delta;
-
 	function draw() {
 	    requestAnimationFrame(draw);
 	    now = Date.now();
@@ -68,7 +68,7 @@ function onLoadHandler() {
 	     
 	    if (delta > interval) {
 	        then = now - (delta % interval);
-	        step(now);
+	        step(now-start);
 	    }
 	}
 	draw();

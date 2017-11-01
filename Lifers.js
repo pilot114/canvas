@@ -3,8 +3,7 @@ function Grass(coords) {
 	this.x = coords[0];
 	this.y = coords[1];
 	this.radius = 8;
-	this.tick = 0;
-	this.lifeTime = 60*60;// минута?
+	this.ticksToDeath = 60*60; // ~1 минута при 60 fps
 	this.energy = 100;
 
 	this.draw = function(context) {
@@ -12,8 +11,7 @@ function Grass(coords) {
 	};
 
 	this.update = function(world) {
-		this.tick++;
-		if (this.tick > this.lifeTime) {
+		if (!--this.ticksToDeath) {
 			world.remove(this);
 		}
 	};
@@ -24,8 +22,7 @@ function Cow(coords) {
 	this.x = coords[0];
 	this.y = coords[1];
 	this.radius = 10;
-	this.tick = 0;
-	this.lifeTime = 60*60 * 2;
+	this.ticksToDeath = 60*60 * 2;
 	this.energy = 100;
 
 	this.draw = function(context) {
@@ -34,8 +31,7 @@ function Cow(coords) {
 
 	this.update = function(world) {
 		Anim(this, world, 'random');
-		this.tick++;
-		if (this.tick > this.lifeTime) {
+		if (!--this.ticksToDeath) {
 			world.remove(this);
 		}
 	};
@@ -46,8 +42,7 @@ function Wolf(coords) {
 	this.x = coords[0];
 	this.y = coords[1];
 	this.radius = 10;
-	this.tick = 0;
-	this.lifeTime = 60*60 * 5;
+	this.ticksToDeath = 60*60;
 	this.energy = 100;
 
 	this.draw = function(context) {
@@ -56,30 +51,7 @@ function Wolf(coords) {
 
 	this.update = function(world) {
 		Anim(this, world, 'particle');
-		this.tick++;
-		if (this.tick > this.lifeTime) {
-			world.remove(this);
-		}
-	};
-}
-
-function Ball(coords) {
-	this.name = 'Ball';
-	this.x = coords[0];
-	this.y = coords[1];
-	this.radius = 40;
-	this.tick = 0;
-	this.lifeTime = 60*60 * 5;
-	this.energy = 100;
-
-	this.draw = function(context) {
-		drawCircle(context, this, 'green');
-	};
-
-	this.update = function(world) {
-		Anim(this, world, 'circle');
-		this.tick++;
-		if (this.tick > this.lifeTime) {
+		if (!--this.ticksToDeath) {
 			world.remove(this);
 		}
 	};

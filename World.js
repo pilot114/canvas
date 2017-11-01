@@ -4,17 +4,17 @@ function World(width, height) {
 
 	this.state = [];
 	this.tick = 0;
-	this.time = 0;
-	this.lastId = 0;
+	this.ms = 0;
+	this.nextId = 0;
 
 	/*
 	 *	Методы работы с состоянием
 	 */
 
 	this.add = function(object) {
-		object.id = this.lastId;
+		object.id = this.nextId;
 		this.state.push(object);
-		this.lastId++;
+		this.nextId++;
 	}
 
 	this.remove = function(object) {
@@ -41,8 +41,7 @@ function World(width, height) {
 			this.state[i].update(this);
 		}
 		this.tick++;
-		this.time = time;
-		// console.log(this.tick);
+		this.ms = time;
 	}
 
 	this.draw = function(context) {

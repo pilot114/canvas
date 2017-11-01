@@ -46,6 +46,14 @@ function uniqTypes(arr) {
 }
 
 // examples
+function drawCircle(context, lifer, color) {
+	context.fillStyle = color;
+	context.beginPath();
+	context.arc(lifer.x, lifer.y, lifer.radius, 0, Math.PI*2);
+	context.closePath();
+	context.fill();
+}
+
 function drawRect(context) {
 	context.fillStyle = 'green';
 	context.fillRect(100,100,200,200);
