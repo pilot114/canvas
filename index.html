@@ -32,6 +32,7 @@ function onLoadHandler() {
 	// генерим начальное состояние
 	var world = new World(canvas.width, canvas.height);
 	createLifers(world, "Wolf", 3);
+	createLifers( world, "Cow", 30);
 
 	var infoElement = $('#info');
 
@@ -50,16 +51,8 @@ function onLoadHandler() {
 
 		// можно добавлять объекты динамически
 		// createLifers(world, "Grass", 3);
-		// createLifers( world, "Cow", 2);
-		// createLifers( world, "Wolf", 1);
 
-		infoElement.text(JSON.stringify(world));
-		// infoElement.text(JSON.stringify({
-		// 	tick: world,
-		// 	time: world.time,
-		// 	totalCount: world.state.length,
-		// 	total: uniqTypes(world.state)
-		// }));
+		// infoElement.text(JSON.stringify(world));
 	};
 	function draw() {
 	    requestAnimationFrame(draw);

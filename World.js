@@ -5,7 +5,7 @@ function World(width, height) {
 	this.state = [];
 	this.tick = 0;
 	this.ms = 0;
-	this.nextId = 0;
+	this.nextId = 1;
 
 	/*
 	 *	Методы работы с состоянием
@@ -27,12 +27,17 @@ function World(width, height) {
 	}
 
 	this.getNear = function(lifer) {
-		this.state = this.state.map(function(object){
+		return this.state.filter(function(object){
+			if (this == object) {
+				return false;
+			}
 			var dx = object.x - this.x;
 			var dy = object.y - this.y;
-			if (Math.sqrt(dx*dx + dy*dy) > object.radiusView) {
-				// TODO
+			var distance = Math.sqrt(dx*dx + dy*dy);
+			if (distance < this.radiusView) {
+				return true;
 			}
+			return false;
 		}, lifer);
 	}
 

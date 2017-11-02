@@ -54,6 +54,14 @@ function drawCircle(context, lifer, color) {
 	context.fill();
 }
 
+function drawViewCircle(context, lifer) {
+	context.beginPath();
+	context.arc(lifer.x, lifer.y, lifer.radiusView, 0, Math.PI*2);
+	context.lineWidth = 0.1;
+	context.closePath();
+	context.stroke();
+}
+
 function drawRect(context) {
 	context.fillStyle = 'green';
 	context.fillRect(100,100,200,200);
