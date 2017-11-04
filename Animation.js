@@ -1,25 +1,30 @@
 // target - объект, который влияет на выбор движения
 // target -> targets
+// вообще, заменить targets на вектор, получаемый от Behavior
 function Anim(lifer, world, name, target) {
+	// обычно dx и dy высчитываем из вектора
 
 	switch(name) {
 
 	  case 'random':
-	  	lifer.dx = rand(-1, 1);
-	  	lifer.dy = rand(-1, 1);
+	  	// для рандома удобнее сразу задавать угол
+	  	var angle = rand(0, 360);
+	  	lifer.dy = Math.sin(angle*(Math.PI/180)) * lifer.speed;
+	  	lifer.dx = Math.cos(angle*(Math.PI/180)) * lifer.speed;
 		break;
-
 	  // используем информацию о текущем импульсе через объект lifer: получаем и сохраняем
 	  case 'particle':
+	  	var angle = rand(0, 360);
 	  	// если импульса нет
 		if (!lifer.hasOwnProperty('dx')) {
-			lifer.dx = rand([-3, -2, -1, 1, 2, 3]);
+		  	lifer.dx = Math.cos(angle*(Math.PI/180)) * lifer.speed;
 		}
 		if (!lifer.hasOwnProperty('dy')) {
-			lifer.dy = rand([-3, -2, -1, 1, 2, 3]);
+		  	lifer.dy = Math.sin(angle*(Math.PI/180)) * lifer.speed;
 		}
 		break;
 	  case 'circle':
+			// параметрическое движение
 	  		var radius = 150;
 	  		var center = [world.width/2, world.height/2];
 
@@ -32,19 +37,17 @@ function Anim(lifer, world, name, target) {
 			lifer.y = center[1] - radius * Math.sin(theta);
 		// для параметрического движения дальнейшие действия не нужны
 		return;
+	  case 'chase':
+		    var vector = [lifer.x - target.x, lifer.y - target.y];
+			var c = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
+		    lifer.dx = -(vector[0] / c) * lifer.speed;
+		    lifer.dy = -(vector[1] / c) * lifer.speed;
+		break;
 	  case 'escape':
-		if (target.x > lifer.x) {
-			lifer.dx = -1;
-		}
-		if (target.x < lifer.x) {
-			lifer.dx = 1;
-		}
-		if (target.y < lifer.y) {
-			lifer.dy = 1;
-		}
-		if (target.y > lifer.y) {
-			lifer.dy = -1;
-		}
+		    var vector = [lifer.x - target.x, lifer.y - target.y];
+		  	var c = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
+		    lifer.dx = (vector[0] / c) * lifer.speed;
+		    lifer.dy = (vector[1] / c) * lifer.speed;
 		break;
 	  default:
 	  		lifer.dx = 0;
