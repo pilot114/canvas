@@ -25,7 +25,7 @@ function Cow(x, y) {
 	this.radiusView = 100;
 	this.ttl = 60*60 * 2;
 	this.energy = 100;
-	this.speed = 1.4;
+	this.speed = 1;
 
 	this.draw = function(context) {
 		drawCircle(context, this, 'peru');
@@ -50,7 +50,7 @@ function Wolf(x, y) {
 	this.radiusView = 100;
 	this.ttl = 60*60 * 2;
 	this.energy = 100;
-	this.speed = 0.5;
+	this.speed = 1.1;
 
 
 	this.draw = function(context) {
