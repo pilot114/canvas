@@ -16,6 +16,7 @@
   crossorigin="anonymous"></script>
 <script type="text/javascript" src="./Helpers.js"></script>
 <script type="text/javascript" src="./Animation.js"></script>
+<script type="text/javascript" src="./Behavior.js"></script>
 <script type="text/javascript" src="./Lifers.js"></script>
 <script type="text/javascript" src="./World.js"></script>
 <script type="text/javascript">
@@ -31,9 +32,9 @@ function onLoadHandler() {
 
 	// генерим начальное состояние
 	var world = new World(canvas.width, canvas.height);
-	createLifers(world, "Wolf", 50);
-	createLifers( world, "Cow", 50);
-	createLifers( world, "Grass", 50);
+	// createLifers(world, "Wolf", 100);
+	createLifers( world, "Cow", 60);
+	createLifers( world, "Grass", 100);
 
 	var infoElement = $('#info');
 
@@ -51,9 +52,9 @@ function onLoadHandler() {
 		world.draw(context);
 
 		// можно добавлять объекты динамически
-		// createLifers(world, "Grass", 3);
+		createLifers(world, "Grass", 1);
 
-		// infoElement.text(JSON.stringify(world));
+		infoElement.text(JSON.stringify(world.getCounts()));
 	};
 	function draw() {
 	    requestAnimationFrame(draw);

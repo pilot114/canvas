@@ -1,7 +1,6 @@
-// target - объект, который влияет на выбор движения
-// target -> targets
-// вообще, заменить targets на вектор, получаемый от Behavior
-function Anim(lifer, world, name, target) {
+// сделать конструктор, чтобы только один раз передавать сюда world
+
+function Anim(lifer, world, name, vector) {
 	// обычно dx и dy высчитываем из вектора
 
 	switch(name) {
@@ -38,13 +37,13 @@ function Anim(lifer, world, name, target) {
 		// для параметрического движения дальнейшие действия не нужны
 		return;
 	  case 'chase':
-		    var vector = [lifer.x - target.x, lifer.y - target.y];
+		    var vector = [lifer.x - vector.x, lifer.y - vector.y];
 			var c = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
 		    lifer.dx = -(vector[0] / c) * lifer.speed;
 		    lifer.dy = -(vector[1] / c) * lifer.speed;
 		break;
 	  case 'escape':
-		    var vector = [lifer.x - target.x, lifer.y - target.y];
+		    var vector = [lifer.x - vector.x, lifer.y - vector.y];
 		  	var c = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
 		    lifer.dx = (vector[0] / c) * lifer.speed;
 		    lifer.dy = (vector[1] / c) * lifer.speed;
@@ -55,7 +54,7 @@ function Anim(lifer, world, name, target) {
 		break;
 	}
 
-	// не пересекаем границы мира
+	// не пересекаем границы мира. Продумать этот момент
 	if (lifer.x + lifer.dx >= world.width || lifer.x + lifer.dx <= 0) {
 		lifer.dx = -lifer.dx;
 	}

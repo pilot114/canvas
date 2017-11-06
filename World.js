@@ -7,10 +7,6 @@ function World(width, height) {
 	this.ms = 0;
 	this.nextId = 1;
 
-	/*
-	 *	Методы работы с состоянием
-	 */
-
 	this.add = function(object) {
 		object.id = this.nextId;
 		this.state.push(object);
@@ -57,5 +53,17 @@ function World(width, height) {
 
 	this.hasLife = function() {
 		return this.state.length > 0;
+	}
+
+	this.getCounts = function() {
+		var counts = {};
+		for (var i = 0; i < this.state.length; i++) {
+			var name = this.state[i].name;
+			if (!counts.hasOwnProperty(name)) {
+				counts[name] = 0;
+			}
+			counts[name]++;
+		}
+		return counts;
 	}
 };

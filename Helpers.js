@@ -3,7 +3,8 @@ function createLifers(world, name, count) {
 	var randCoords = randCoordGenerate(world.width, world.height);
 
 	for (var i = 0; i < count; i++) {
-		var obj = new window[name](randCoords());
+		var coords = randCoords();
+		var obj = new window[name](coords[0], coords[1]);
 		world.add(obj);
 	}
 }
@@ -17,6 +18,10 @@ function randCoordGenerate(maxWidth, maxHeight) {
 			Math.floor(Math.random() * maxHeight) + 1
 		];
 	}
+}
+
+function getRange(one, two) {
+	return Math.sqrt(Math.pow(two.x - one.x, 2) + Math.pow(two.y - one.y, 2));
 }
 
 // min max OR random from array
