@@ -42,11 +42,9 @@ function drawCircle(context, x, y) {
 function repeat(fps, context, speed, name) {
 	var prevTime = Date.now();
 	var curTime = 0;
-	// var timer = 0;
 
 		var intID = setInterval(function(){
 		context.clearRect(0, 0, 500, 500);
-		// timer++;
 
 		if (name == 'test') {
 			var fps_new = $( "#test_fps" ).val();
@@ -86,27 +84,25 @@ function repeat(fps, context, speed, name) {
 	}, 1000/fps);
 }
 
-function onLoadHandler() {
-	var canvas = document.getElementById('canvas_1');
-	var context = canvas.getContext('2d');
-	canvas.width = 500;
-	canvas.height = 500;
+window.onload = function() {
+    var canvas = document.getElementById('canvas_1');
+    var context = canvas.getContext('2d');
+    canvas.width = 500;
+    canvas.height = 500;
 
-	var canvas2 = document.getElementById('canvas_2');
-	var context2 = canvas2.getContext('2d');
-	canvas2.width = 500;
-	canvas2.height = 500;
+    var canvas2 = document.getElementById('canvas_2');
+    var context2 = canvas2.getContext('2d');
+    canvas2.width = 500;
+    canvas2.height = 500;
 
-	var test_fps = 120;
-	var speed = 2;
+    var test_fps = 120;
+    var speed = 2;
 
-	repeat(test_fps, context, speed, 'test');
-	repeat(60, context2, speed, 'etalon');
+    repeat(test_fps, context, speed, 'test');
+    repeat(60, context2, speed, 'etalon');
 
-	$('#test_fps').text(test_fps);
+    $('#test_fps').text(test_fps);
 }
-
-window.onload = onLoadHandler;
 
 </script>
 </html>

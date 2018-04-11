@@ -15,7 +15,7 @@ function World(width, height) {
 
 	this.remove = function(object) {
 		this.state = this.state.filter(function(el) {
-			if (el.id == this.id) {
+			if (el.id === this.id) {
 			    return false;
 			}
 		    return true;
@@ -24,7 +24,7 @@ function World(width, height) {
 
 	this.getNear = function(lifer) {
 		return this.state.filter(function(object){
-			if (this == object) {
+			if (this === object) {
 				return false;
 			}
 			var dx = object.x - this.x;

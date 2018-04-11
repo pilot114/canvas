@@ -4,6 +4,7 @@
 	<title>Тест FPS</title>
 </head>
 <body>
+	<h1>Где больше fps?</h1>
 	<canvas id="canvas_1" class="test_canvas" style="width: 500px; height: 500px; background-color: #ddd;"></canvas>
 	<canvas id="canvas_2" class="test_canvas" style="width: 500px; height: 500px; background-color: #ddd;"></canvas>
 	<div id="result"></div>
@@ -74,30 +75,14 @@ window.onload = function() {
 	canvas2.height = 500;
 
 	var ids = run(context, context2);
-	var result = null;
-	$.get( "/counter.php", function( data ) {
-		console.log(data);
-		$('#result').text(data);
-		result = data.split('/');
-	});
-
 
 	$('.test_canvas').click(function(){
 		var name = $(this).attr('id');
-		var win = "-1";
 		if (name == 'canvas_1' && ids[0] == "left" || name == 'canvas_2' && ids[0] == "right") {
 			alert("win");
-			var win = "1";
-			result[0]++;
 		} else {
 			alert("lose");
 		}
-		result[1]++;
-
-		$.get( "/counter.php?w="+win, function( data ) {
-			console.log(data);
-			$('#result').text(data);
-		});
 
 		ids = run(context, context2);
 	});

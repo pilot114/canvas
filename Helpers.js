@@ -9,9 +9,7 @@ function createLifers(world, name, count) {
 	}
 }
 
-function randCoordGenerate(maxWidth, maxHeight) {	
-	var maxWidth = maxWidth;
-	var maxHeight = maxHeight;
+function randCoordGenerate(maxWidth, maxHeight) {
 	return function() {
 		return [
 			Math.floor(Math.random() * maxWidth) + 1,
@@ -50,7 +48,6 @@ function uniqTypes(arr) {
 	return counts;
 }
 
-// examples
 function drawCircle(context, lifer, color) {
 	context.fillStyle = color;
 	context.beginPath();
@@ -67,6 +64,7 @@ function drawViewCircle(context, lifer) {
 	context.stroke();
 }
 
+// examples
 function drawRect(context) {
 	context.fillStyle = 'green';
 	context.fillRect(100,100,200,200);

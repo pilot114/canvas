@@ -2,7 +2,7 @@ function Grass(x, y) {
 	this.name = 'Grass';
 	this.x = x;
 	this.y = y;
-	this.radius = 10;
+	this.radius = 8;
 	this.ttl = 60*60 * 10; // ~10 минут при 60 fps
 	this.energy = 100;
 
@@ -48,9 +48,9 @@ function Wolf(x, y) {
 	this.y = y;
 	this.radius = 8;
 	this.radiusView = 100;
-	this.ttl = 60*60 * 2;
+	this.ttl = 60*60;
 	this.energy = 100;
-	this.speed = 1.1;
+	this.speed = 1.2;
 
 
 	this.draw = function(context) {

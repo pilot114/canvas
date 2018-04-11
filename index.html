@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>awesome life</title>
+	<title>flat world</title>
 </head>
 <body>
 	<div>
@@ -28,15 +28,13 @@ function onLoadHandler() {
 	canvas.width = 1400;
 	canvas.height = 700;
 
-	var fps = 30;
+	var fps = 60;
 
 	// генерим начальное состояние
 	var world = new World(canvas.width, canvas.height);
-	createLifers(world, "Wolf", 5);
-	createLifers( world, "Cow", 60);
-	createLifers( world, "Grass", 100);
-
-	var infoElement = $('#info');
+	createLifers(world, "Wolf", 10);
+	createLifers(world, "Cow", 60);
+	createLifers(world, "Grass", 100);
 
 	// рендерим, используя requestAnimationFrame
 	var now;
@@ -54,7 +52,7 @@ function onLoadHandler() {
 		// можно добавлять объекты динамически
 		createLifers(world, "Grass", 1);
 
-		infoElement.text(JSON.stringify(world.getCounts()));
+        $('#info').text(JSON.stringify(world.getCounts()));
 	};
 	function draw() {
 	    requestAnimationFrame(draw);
