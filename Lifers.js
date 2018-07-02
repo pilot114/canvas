@@ -33,7 +33,7 @@ function Cow(x, y) {
 	};
 
 	this.update = function(world) {
-		var beh = Behavior(this, world);
+		let beh = Behavior(this, world);
 		Anim(this, world, beh.AnimName, beh.vector);
 
 		if (!--this.ttl) {
@@ -59,7 +59,7 @@ function Wolf(x, y) {
 	};
 
 	this.update = function(world) {
-		var beh = Behavior(this, world);
+        let beh = Behavior(this, world);
 		Anim(this, world, beh.AnimName, beh.vector);
 
 		if (!--this.ttl) {

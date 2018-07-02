@@ -6,14 +6,12 @@
 <body>
 	<div>
 		<h1>info:</h1>
-		<div id="info"></div>
+		<div id="worldInfo"></div>
+		<div id="countsInfo"></div>
+		<div id="selectInfo"></div>
 	</div>
 	<canvas id="canvas" style="width: 1400px; height: 700px; background-color: #ddd;"></canvas>
 </body>
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
 <script type="text/javascript" src="./Helpers.js"></script>
 <script type="text/javascript" src="./Animation.js"></script>
 <script type="text/javascript" src="./Behavior.js"></script>
@@ -21,53 +19,61 @@
 <script type="text/javascript" src="./World.js"></script>
 <script type="text/javascript">
 
-function onLoadHandler() {
-	// подготавливаем канвас
-	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
+window.onload = function() {
+	let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d');
 	canvas.width = 1400;
 	canvas.height = 700;
 
-	var fps = 60;
+    canvas.addEventListener("click", function(event){
+        let eventLocation = getEventLocation(this, event);
+        world.selectByLocation(eventLocation);
+    });
 
-	// генерим начальное состояние
-	var world = new World(canvas.width, canvas.height);
+
+    let world = new World(canvas.width, canvas.height);
 	createLifers(world, "Wolf", 10);
 	createLifers(world, "Cow", 60);
-	createLifers(world, "Grass", 100);
+	createLifers(world, "Grass", 0);
 
-	// рендерим, используя requestAnimationFrame
-	var now;
-	var start = Date.now();
-	var then = Date.now();
-	var interval = 1000/fps;
-	var delta;
+    let fps = 60;
+    let start = Date.now();
+    let x = Date.now();
+    let interval = 1000/fps;
+    let delta;
+    let now;
 
-	// "шаг" обработки мира
-	var step = function(now) {
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		world.update(now);
-		world.draw(context);
-
-		// можно добавлять объекты динамически
-		createLifers(world, "Grass", 1);
-
-        $('#info').text(JSON.stringify(world.getCounts()));
-	};
-	function draw() {
+    (function draw() {
 	    requestAnimationFrame(draw);
-	    now = Date.now();
-	    delta = now - then;
-	     
-	    if (delta > interval) {
-	        then = now - (delta % interval);
-	        step(now-start);
-	    }
-	}
-	draw();
-}
 
-window.onload = onLoadHandler;
+        now = Date.now();
+        delta = now - x;
+        x = now - delta % interval;
+
+        if (delta > interval) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            world.update(now-start);
+            world.draw(context);
+
+            createLifers(world, "Grass", 1);
+
+
+            // info block
+            document.getElementById('worldInfo').innerText = JSON.stringify({
+				tick: world.tick,
+				ms: world.ms,
+                nextId: world.nextId,
+                // fps: Math.round(1000/(world.ms/world.tick)) // просто проверка
+			});
+            document.getElementById('countsInfo').innerText = JSON.stringify(world.getCounts());
+
+            if (world.select) {
+                document.getElementById('selectInfo').innerText = JSON.stringify(world.select);
+			}
+        }
+	})();
+}
 
 </script>
 </html>

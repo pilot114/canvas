@@ -6,59 +6,70 @@ function World(width, height) {
 	this.tick = 0;
 	this.ms = 0;
 	this.nextId = 1;
+	this.select = null;
 
 	this.add = function(object) {
 		object.id = this.nextId;
 		this.state.push(object);
 		this.nextId++;
-	}
+	};
 
 	this.remove = function(object) {
 		this.state = this.state.filter(function(el) {
-			if (el.id === this.id) {
-			    return false;
-			}
-		    return true;
+			return el.id !== this.id;
 		}, object);
-	}
+	};
+
+	this.selectByLocation = function(location){
+	    let nearest = {distance: Infinity};
+
+        for (let i = 0; i < this.state.length; i++) {
+            let dx = location.x - this.state[i].x;
+            let dy = location.y - this.state[i].y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+
+            if (distance < nearest.distance) {
+                nearest = this.state[i];
+                nearest.distance = distance;
+            }
+        }
+        this.select = nearest;
+    };
 
 	this.getNear = function(lifer) {
 		return this.state.filter(function(object){
 			if (this === object) {
 				return false;
 			}
-			var dx = object.x - this.x;
-			var dy = object.y - this.y;
-			var distance = Math.sqrt(dx*dx + dy*dy);
-			if (distance < this.radiusView) {
-				return true;
-			}
-			return false;
+            let dx = object.x - this.x;
+            let dy = object.y - this.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            return distance < this.radiusView;
 		}, lifer);
-	}
+	};
 
 	this.update = function(time) {
-		for (var i = 0; i < this.state.length; i++) {
+		for (let i = 0; i < this.state.length; i++) {
 			this.state[i].update(this);
 		}
 		this.tick++;
 		this.ms = time;
-	}
+	};
 
 	this.draw = function(context) {
-		for (var i = 0; i < this.state.length; i++) {
+		for (let i = 0; i < this.state.length; i++) {
 			this.state[i].draw(context);
 		}
-	}
+	};
 
 	this.hasLife = function() {
 		return this.state.length > 0;
-	}
+	};
 
 	this.getCounts = function() {
-		var counts = {};
-		for (var i = 0; i < this.state.length; i++) {
-			var name = this.state[i].name;
+        let counts = {};
+		for (let i = 0; i < this.state.length; i++) {
+            let name = this.state[i].name;
 			if (!counts.hasOwnProperty(name)) {
 				counts[name] = 0;
 			}
@@ -66,4 +77,4 @@ function World(width, height) {
 		}
 		return counts;
 	}
-};
+}
