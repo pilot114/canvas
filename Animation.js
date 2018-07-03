@@ -62,6 +62,7 @@ function Anim(lifer, world, name, vector) {
 		lifer.dy = -lifer.dy;
 	}
 
+	// всё что делает Anim - обновляет координаты объекта
 	lifer.x += lifer.dx;
 	lifer.y += lifer.dy;
 }
