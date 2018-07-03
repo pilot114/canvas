@@ -2,9 +2,9 @@
 function Behavior(lifer, world) {
 	var nears = world.getNear(lifer);
 
-	switch(lifer.name) {
+	switch(lifer.behaviorName) {
 
-		case 'Cow':
+		case 'herbivore':
 			var nearestWolf = null;
 			var nearestGrass = null;
 
@@ -48,7 +48,7 @@ function Behavior(lifer, world) {
 				}
 				return {AnimName: 'particle', vector: null}
 			}
-		case 'Wolf':
+		case 'predator':
 			var nearestCow = null;
 
 			if (nears.length > 0) {

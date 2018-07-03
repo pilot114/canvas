@@ -19,6 +19,7 @@ function Grass(x, y) {
 
 function Cow(x, y) {
 	this.name = 'Cow';
+	this.behaviorName = 'herbivore';
 	this.x = x;
 	this.y = y;
 	this.radius = 10;
@@ -44,6 +45,7 @@ function Cow(x, y) {
 
 function Wolf(x, y) {
 	this.name = 'Wolf';
+	this.behaviorName = 'predator';
 	this.x = x;
 	this.y = y;
 	this.radius = 8;

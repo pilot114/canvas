@@ -18,6 +18,36 @@ function getEventLocation(element,event){
     };
 }
 
+function createRandomLifers(world, count) {
+    let randCoords = randCoordGenerate(world.width, world.height);
+
+    for (let i = 0; i < count; i++) {
+        let coords = randCoords();
+        let color = rand(['yellow', 'blue', 'red']);
+
+        let thing = function(x, y) {
+            this.name = 'Cow';
+            this.x = x;
+            this.y = y;
+            this.radius = rand(5, 15);
+            this.ttl = 60*60 * rand(1, 10);
+            this.energy = rand(10, 1000);
+
+            this.draw = function(context) {
+                drawCircle(context, this, color);
+            };
+
+            this.update = function(world) {
+                if (!--this.ttl) {
+                    world.remove(this);
+                }
+            };
+        };
+
+        let obj = new thing(coords[0], coords[1]);
+        world.add(obj);
+    }
+}
 
 function createLifers(world, name, count) {
     // генератор случайных координат внутри канваса
