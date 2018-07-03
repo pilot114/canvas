@@ -115,6 +115,14 @@ function drawViewCircle(context, lifer) {
     context.stroke();
 }
 
+function drawSelectLable(context, lifer, text) {
+    context.fillStyle = "#444444";
+    context.font = "normal normal 14px Helvetica";
+    context.textBaseline = "middle";
+    context.textAlign = "center";
+    context.fillText(text, lifer.x, lifer.y + 20);
+}
+
 // examples
 function drawRect(context) {
     context.fillStyle = 'green';

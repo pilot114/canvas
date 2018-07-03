@@ -18,7 +18,11 @@ function World(width, height) {
 		this.state = this.state.filter(function(el) {
 			return el.id !== this.id;
 		}, object);
-	};
+
+        if (this.select && this.select.id === object.id) {
+            this.select = null;
+        }
+    };
 
 	this.selectByLocation = function(location){
 	    let nearest = {distance: Infinity};
@@ -60,6 +64,10 @@ function World(width, height) {
 		for (let i = 0; i < this.state.length; i++) {
 			this.state[i].draw(context);
 		}
+
+		if (this.select) {
+            drawSelectLable(context, this.select, 'id:' + this.select.id);
+        }
 	};
 
 	this.hasLife = function() {

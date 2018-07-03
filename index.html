@@ -4,11 +4,11 @@
 	<title>flat world</title>
 </head>
 <body>
-	<div>
+	<div style="width: 1400px; height: 220px;">
 		<h1>info:</h1>
 		<div id="worldInfo"></div>
 		<div id="countsInfo"></div>
-		<div id="selectInfo"></div>
+		<div id="selectInfo" style="position:relative; top: -110px; left: 350px;"></div>
 	</div>
 	<canvas id="canvas" style="width: 1400px; height: 700px; background-color: #ddd;"></canvas>
 </body>
@@ -32,9 +32,9 @@ window.onload = function() {
 
 
     let world = new World(canvas.width, canvas.height);
-	createLifers(world, "Wolf", 10);
-	createLifers(world, "Cow", 60);
-	createLifers(world, "Grass", 0);
+	createLifers(world, "Wolf", 20);
+	createLifers(world, "Cow", 100);
+	createLifers(world, "Grass", 150);
 
     // createRandomLifers(world, 1000);
 
@@ -65,13 +65,21 @@ window.onload = function() {
             document.getElementById('worldInfo').innerText = JSON.stringify({
 				tick: world.tick,
 				ms: world.ms,
-                nextId: world.nextId,
-                // fps: Math.round(1000/(world.ms/world.tick)) // просто проверка
+                fps: Math.round(1000/(world.ms/world.tick)) // просто проверка
 			});
             document.getElementById('countsInfo').innerText = JSON.stringify(world.getCounts());
 
             if (world.select) {
-                document.getElementById('selectInfo').innerText = JSON.stringify(world.select);
+                let output = '';
+                for (let property in world.select) {
+                    if (typeof world.select[property] != 'function') {
+                        output += property + ': ' + world.select[property]+"\n";
+					}
+                }
+
+                document.getElementById('selectInfo').innerText = output;
+			} else {
+                document.getElementById('selectInfo').innerText = '';
 			}
         }
 	})();
