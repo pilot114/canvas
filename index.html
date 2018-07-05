@@ -2,28 +2,63 @@
 <html>
 <head>
 	<title>flat world</title>
+	<style>
+		.line {
+			fill: none;
+			stroke: #000;
+			stroke-width: 1.5px;
+		}
+		#container {
+			display: flex;
+		}
+		#info {
+			width: 250px;
+			height: 240px;
+		}
+		#graph {
+			flex: 1;
+		}
+		#canvas {
+			width: 1200px;
+			height: 600px;
+			background-color: #ddd
+		}
+		#selectInfo {
+			position: absolute;
+			top: 0px;
+			left: 700px;
+		}
+	</style>
 </head>
 <body>
-	<div style="width: 1400px; height: 220px;">
-		<h1>info:</h1>
-		<div id="worldInfo"></div>
-		<div id="countsInfo"></div>
-		<div id="selectInfo" style="position:relative; top: -110px; left: 350px;"></div>
+	<div id="container">
+		<div id="info">
+			<div id="worldInfo"></div>
+			<hr>
+			<div id="countsInfo"></div>
+			<div id="selectInfo"></div>
+		</div>
+		<svg id="graph" width="400" height="200"></svg>
 	</div>
-	<canvas id="canvas" style="width: 1400px; height: 700px; background-color: #ddd;"></canvas>
+	<canvas id="canvas"></canvas>
+
 </body>
+<script src="http://d3js.org/d3.v4.min.js"></script>
 <script type="text/javascript" src="./Helpers.js"></script>
 <script type="text/javascript" src="./Animation.js"></script>
 <script type="text/javascript" src="./Behavior.js"></script>
 <script type="text/javascript" src="./Lifers.js"></script>
 <script type="text/javascript" src="./World.js"></script>
+<script type="text/javascript" src="./Graph.js"></script>
+<script type="text/javascript" src="./Memory.js"></script>
+
 <script type="text/javascript">
 
 window.onload = function() {
 	let canvas = document.getElementById('canvas');
     let context = canvas.getContext('2d');
-	canvas.width = 1400;
-	canvas.height = 700;
+	canvas.width = 1200;
+	canvas.height = 600;
 
     canvas.addEventListener("click", function(event){
         let eventLocation = getEventLocation(this, event);
@@ -58,16 +93,27 @@ window.onload = function() {
             world.update(now-start);
             world.draw(context);
 
-            createLifers(world, "Grass", 1);
+            if (Math.random() > 0.5) {
+                createLifers(world, "Grass", 1);
+			}
 
 
             // info block
-            document.getElementById('worldInfo').innerText = JSON.stringify({
-				tick: world.tick,
-				ms: world.ms,
-                fps: Math.round(1000/(world.ms/world.tick)) // просто проверка
-			});
-            document.getElementById('countsInfo').innerText = JSON.stringify(world.getCounts());
+            // document.getElementById('worldInfo').innerText = JSON.stringify({
+				// tick: world.tick,
+				// ms: world.ms,
+            //     fps: Math.round(1000/(world.ms/world.tick)), // просто проверка
+            //     memory: memorySizeOf(world)
+            // });
+
+            document.getElementById('worldInfo').innerText = objectToString({
+                tick: world.tick,
+                ms: world.ms,
+                fps: Math.round(1000 / (world.ms / world.tick)), // просто проверка
+                historyMemory: memorySizeOf(world.history),
+            });
+
+			document.getElementById('countsInfo').innerText = objectToString(world.getCounts());
 
             if (world.select) {
                 let output = '';

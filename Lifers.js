@@ -1,5 +1,6 @@
 function Grass(x, y) {
 	this.name = 'Grass';
+
 	this.x = x;
 	this.y = y;
 	this.radius = 8;
@@ -15,11 +16,19 @@ function Grass(x, y) {
 			world.remove(this);
 		}
 	};
+
+	this.export = function() {
+		return [
+			'x:y:ttl:energy',
+            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
+		];
+	}
 }
 
 function Cow(x, y) {
 	this.name = 'Cow';
 	this.behaviorName = 'herbivore';
+
 	this.x = x;
 	this.y = y;
 	this.radius = 10;
@@ -41,6 +50,13 @@ function Cow(x, y) {
 			world.remove(this);
 		}
 	};
+
+    this.export = function() {
+        return [
+            'x:y:ttl:energy',
+            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
+        ];
+    }
 }
 
 function Wolf(x, y) {
@@ -68,4 +84,11 @@ function Wolf(x, y) {
 			world.remove(this);
 		}
 	};
+
+    this.export = function() {
+        return [
+            'x:y:ttl:energy',
+            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
+        ];
+    }
 }

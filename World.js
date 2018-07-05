@@ -3,6 +3,7 @@ function World(width, height) {
 	this.height = height;
 
 	this.state = [];
+	this.history = {};
 	this.tick = 0;
 	this.ms = 0;
 	this.nextId = 1;
@@ -53,9 +54,14 @@ function World(width, height) {
 	};
 
 	this.update = function(time) {
+
+		let log = [];
 		for (let i = 0; i < this.state.length; i++) {
 			this.state[i].update(this);
+            log.push(this.state[i].export()[1]);
 		}
+        this.history[this.tick] = log;
+
 		this.tick++;
 		this.ms = time;
 	};

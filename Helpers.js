@@ -1,3 +1,11 @@
+function objectToString(obj) {
+    let output = '';
+    for (let property in obj) {
+        output += property + ': ' + obj[property]+"\n";
+    }
+    return output;
+}
+
 function getElementPosition(obj) {
     let curleft = 0, curtop = 0;
     if (obj.offsetParent) {
