@@ -97,15 +97,6 @@ window.onload = function() {
                 createLifers(world, "Grass", 1);
 			}
 
-
-            // info block
-            // document.getElementById('worldInfo').innerText = JSON.stringify({
-				// tick: world.tick,
-				// ms: world.ms,
-            //     fps: Math.round(1000/(world.ms/world.tick)), // просто проверка
-            //     memory: memorySizeOf(world)
-            // });
-
             document.getElementById('worldInfo').innerText = objectToString({
                 tick: world.tick,
                 ms: world.ms,

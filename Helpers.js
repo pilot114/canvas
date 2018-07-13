@@ -123,12 +123,28 @@ function drawViewCircle(context, lifer) {
     context.stroke();
 }
 
-function drawSelectLable(context, lifer, text) {
+function drawSelectLabel(context, lifer, text) {
     context.fillStyle = "#444444";
     context.font = "normal normal 14px Helvetica";
     context.textBaseline = "middle";
     context.textAlign = "center";
     context.fillText(text, lifer.x, lifer.y + 20);
+}
+
+// context, begin, size, angle
+function drawLine(context, xy, size, angle) {
+
+    xy[0] = parseInt(xy[0]);
+    xy[1] = parseInt(xy[1]);
+    let xy2 = [
+        xy[0] + Math.sin(Math.PI * angle/180.0)*size,
+        xy[1] + Math.cos(Math.PI * angle/180.0)*size
+    ];
+    context.beginPath();
+    context.moveTo(xy[0], xy[1]);
+    context.lineTo(xy2[0], xy2[1]);
+    context.stroke();
+    return xy2;
 }
 
 // examples

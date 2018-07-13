@@ -56,11 +56,17 @@ function World(width, height) {
 	this.update = function(time) {
 
 		let log = [];
+
 		for (let i = 0; i < this.state.length; i++) {
 			this.state[i].update(this);
-            log.push(this.state[i].export()[1]);
+
+            if (this.tick % 10 === 0) {
+                log.push(this.state[i].export()[1]);
+            }
 		}
-        this.history[this.tick] = log;
+		if (this.tick % 10 === 0) {
+            this.history[this.tick] = log;
+		}
 
 		this.tick++;
 		this.ms = time;
@@ -72,7 +78,7 @@ function World(width, height) {
 		}
 
 		if (this.select) {
-            drawSelectLable(context, this.select, 'id:' + this.select.id);
+            drawSelectLabel(context, this.select, 'id:' + this.select.id);
         }
 	};
 

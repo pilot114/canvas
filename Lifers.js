@@ -18,10 +18,8 @@ function Grass(x, y) {
 	};
 
 	this.export = function() {
-		return [
-			'x:y:ttl:energy',
-            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
-		];
+        // 'x:y:ttl:energy',
+		return this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy;
 	}
 }
 
@@ -52,10 +50,8 @@ function Cow(x, y) {
 	};
 
     this.export = function() {
-        return [
-            'x:y:ttl:energy',
-            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
-        ];
+        // 'x:y:ttl:energy',
+        return this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy;
     }
 }
 
@@ -86,9 +82,7 @@ function Wolf(x, y) {
 	};
 
     this.export = function() {
-        return [
-            'x:y:ttl:energy',
-            this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy
-        ];
+        // 'x:y:ttl:energy',
+        return this.x.toFixed(2) + ':' + this.y.toFixed(2) + ':' + this.ttl + ':' + this.energy;
     }
 }
