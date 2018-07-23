@@ -1,20 +1,23 @@
+// массив данных и какая часть этого массива отображается
 let n = 40,
-    random = d3.randomNormal(0, .2),
-    data = d3.range(n).map(random);
+    data = d3.range(n).map(function(){ return 0; });
 
+//добавляем svg
 let svg = d3.select("svg"),
-    margin = {top: 0, right: 0, bottom: 0, left: 40},
+    margin = {top: 10, right: 10, bottom: 20, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// добавляем шкалу к осям
 let xAxis = d3.scaleLinear()
     .domain([0, n - 1])
     .range([0, width]);
 
 let yAxis = d3.scaleLinear()
-    .domain([-1, 1])
+    .domain([0, 100])
     .range([height, 0]);
+
 
 let line = d3.line()
     .x(function(d, i) { return xAxis(i); })
@@ -47,17 +50,22 @@ g.append("g")
 
 
 function tick() {
-    // Push a new data point onto the back.
-    data.push(Math.random() - 0.5);
-    // Redraw the line.
+    // добавляем новые данные
+    if (world.getCounts()['Cow']) {
+        data.push(world.getCounts()['Cow']);
+    } else {
+        data.push(0);
+    }
+
+    // перерисовываем линию
     d3.select(this)
         .attr("d", line)
         .attr("transform", null);
-    // Slide it to the left.
+    // сдвигаем влево
     d3.active(this)
         .attr("transform", "translate(" + xAxis(-1) + ",0)")
         .transition()
         .on("start", tick);
-    // Pop the old data point off the front.
+    // старые данные удаляем
     data.shift();
 }
