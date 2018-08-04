@@ -23,12 +23,14 @@ let line = d3.line()
     .x(function(d, i) { return xAxis(i); })
     .y(function(d, i) { return yAxis(d); });
 
+// границы
 g.append("defs").append("clipPath")
     .attr("id", "clip")
     .append("rect")
     .attr("width", width)
     .attr("height", height);
 
+// оси
 g.append("g")
     .attr("class", "axis axis--x")
     .attr("transform", "translate(0," + yAxis(0) + ")")
