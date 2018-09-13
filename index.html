@@ -71,7 +71,7 @@ window.onload = function() {
 	createLifers(world, "Cow", 100);
 	createLifers(world, "Grass", 150);
 
-    // createRandomLifers(world, 1000);
+    createRandomLifers(world, 100);
 
     let fps = 60;
     let start = Date.now();
@@ -79,6 +79,8 @@ window.onload = function() {
     let interval = 1000/fps;
     let delta;
     let now;
+
+    graphInit();
 
     (function draw() {
 	    requestAnimationFrame(draw);

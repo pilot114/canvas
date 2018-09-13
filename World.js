@@ -58,9 +58,15 @@ function World(width, height) {
 		let log = [];
 
 		for (let i = 0; i < this.state.length; i++) {
-			this.state[i].update(this);
+			this.state[i].update(this); //  ага! при обновлении меняется this.state.length!!!
 
             if (this.tick % 10 === 0) {
+            	// TODO: очень странная бага - иногда отсутствует export()
+				//  т.к. самый последний элемент в state - undefined
+				if (typeof this.state[i] === 'undefined') {
+                    console.log(this.state[i]);
+					console.log(this.state.length === i);
+				}
                 log.push(this.state[i].export()[1]);
             }
 		}

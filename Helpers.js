@@ -31,29 +31,29 @@ function createRandomLifers(world, count) {
 
     for (let i = 0; i < count; i++) {
         let coords = randCoords();
-        let color = rand(['yellow', 'blue', 'red']);
+        let color = rand(['yellow', 'blue', 'red', 'black']);
 
-        let thing = function(x, y) {
-            this.name = 'Cow';
-            this.x = x;
-            this.y = y;
-            this.radius = rand(5, 15);
-            this.ttl = 60*60 * rand(1, 10);
-            this.energy = rand(10, 1000);
+        // берём корову как шаблон
+        let thing = new Cow(coords[0], coords[1]);
 
-            this.draw = function(context) {
-                drawCircle(context, this, color);
-            };
+        thing.radius = rand(5, 15);
+        thing.ttl = 60*60 * rand(1, 10);
+        thing.energy = rand(10, 1000);
+        thing.speed = rand(1, 2);
+        thing.draw = function(context) {
+            drawCircle(context, thing, color);
+        };
+        this.update = function(world) {
+            this.radius = 10;
+            let beh = Behavior(this, world);
+            Anim(this, world, beh.AnimName, beh.vector);
 
-            this.update = function(world) {
-                if (!--this.ttl) {
-                    world.remove(this);
-                }
-            };
+            if (!--this.ttl) {
+                world.remove(this);
+            }
         };
 
-        let obj = new thing(coords[0], coords[1]);
-        world.add(obj);
+        world.add(thing);
     }
 }
 
