@@ -1,11 +1,13 @@
-let n,data,line,svg;
+let data;
+
+let n,svg;
 let xAxis,yAxis;
 
-
 function graphInit() {
-    // массив данных и какая часть этого массива отображается
-    n = 40;
-    data = d3.range(n).map(function(){ return 0; });
+    data = world.getCounts();
+
+    // срез данных для отображения
+    n = 300;
 
     //добавляем svg
     svg = d3.select("svg"),
@@ -20,13 +22,8 @@ function graphInit() {
         .range([0, width]);
 
     yAxis = d3.scaleLinear()
-        .domain([0, world.getCounts()['Cow']])
+        .domain([0, world.maxCounts()])
         .range([height, 0]);
-
-
-    line = d3.line()
-        .x(function(d, i) { return xAxis(i); })
-        .y(function(d, i) { return yAxis(d); });
 
     // границы
     g.append("defs").append("clipPath")
@@ -45,34 +42,61 @@ function graphInit() {
         .attr("class", "axis axis--y")
         .call(d3.axisLeft(yAxis));
 
-    g.append("g")
-        .attr("clip-path", "url(#clip)")
-        .append("path")
-        .datum(data)
-        .attr("class", "line")
-        .transition()
-        .duration(500)
-        .ease(d3.easeLinear)
-        .on("start", tick);
+    let dt = 60;
+
+    for (let name in data) {
+        data[name] = {
+            count: data[name],
+            obj: new window[name](0, 0),
+            data: d3.range(n).map(function(){ return 0; }),
+            // d - это значение, i - время (т.е. тики)
+            // получается по x выводим время, по y - значение
+            line: d3.line().x(function(d, i) { return xAxis(i); }).y(function(d, i) { return yAxis(d); })
+        };
+
+        // добавляем линии на график
+        g.append("g")
+            .attr("clip-path", "url(#clip)")
+            .append("path")
+            .datum(data[name].data)
+            .style("stroke", function(d) { return d.color = data[name].obj.color; })
+            .attr("class", "line")
+            .transition()
+            .duration(dt)
+            .ease(d3.easeLinear)
+            .on("start", tick(data[name]));
+    }
 }
 
-function tick() {
-    // добавляем новые данные
-    if (world.getCounts()['Cow']) {
-        data.push(world.getCounts()['Cow']);
-    } else {
-        data.push(0);
-    }
+// TODO: сделать динамический вывод графиков
+function tick(obj) {
 
-    // перерисовываем линию
+    // добавляем новые данные
+    if (obj.count) {
+        obj.data.push(obj.count);
+    } else {
+        obj.data.push(0);
+    }
+    console.log(this);
+
+    // d3.select(this)
+    //     .attr("d", obj.line)
+    //     .attr("transform", null);
+
+    // старые данные удаляем
+    obj.data.shift();
+
+    return;
+
     d3.select(this)
-        .attr("d", line)
+        .attr("d", obj.line)
         .attr("transform", null);
-    // сдвигаем влево
+
     d3.active(this)
         .attr("transform", "translate(" + xAxis(-1) + ",0)")
         .transition()
-        .on("start", tick);
+        .on("start", tick(obj));
+
     // старые данные удаляем
-    data.shift();
-}
+    obj.data.shift();
+};

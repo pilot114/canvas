@@ -1,3 +1,5 @@
+//TODO var -> let ничего не сломав
+
 // подумать как сделать суперпозиции
 function Behavior(lifer, world) {
 	var nears = world.getNear(lifer);
@@ -75,6 +77,17 @@ function Behavior(lifer, world) {
 			} else {
 				return {AnimName: 'particle', vector: null}
 			}
+		case 'timid':
+            if (nears.length > 0) {
+                let nearest = nears.pop();
+                for (var i = 0; i < nears.length; i++) {
+                    if (getRange(nears[i], lifer) < getRange(nearest, lifer)) {
+                        nearest = nears[i];
+                    }
+                }
+                return {AnimName: 'escape', vector: {x: nearest.x, y: nearest.y}};
+            }
+            return {AnimName: 'particle', vector: null};
 
 		default:
 			break;

@@ -61,13 +61,10 @@ function World(width, height) {
 			this.state[i].update(this); //  ага! при обновлении меняется this.state.length!!!
 
             if (this.tick % 10 === 0) {
-            	// TODO: очень странная бага - иногда отсутствует export()
-				//  т.к. самый последний элемент в state - undefined
-				if (typeof this.state[i] === 'undefined') {
-                    console.log(this.state[i]);
-					console.log(this.state.length === i);
+				//  т.к. локальный update может удалять элементы из state, обработаем такой случай
+				if (typeof this.state[i] !== 'undefined') {
+                    log.push(this.state[i].export()[1]);
 				}
-                log.push(this.state[i].export()[1]);
             }
 		}
 		if (this.tick % 10 === 0) {
@@ -102,5 +99,16 @@ function World(width, height) {
 			counts[name]++;
 		}
 		return counts;
+	}
+
+    this.maxCounts = function() {
+		let max = 0;
+		let counts = this.getCounts();
+        for (let field in counts) {
+            if (counts[field] > max) {
+                max = counts[field];
+            }
+        }
+        return max;
 	}
 }

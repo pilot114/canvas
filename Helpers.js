@@ -35,6 +35,7 @@ function createRandomLifers(world, count) {
 
         // берём корову как шаблон
         let thing = new Cow(coords[0], coords[1]);
+        thing.name = "Random";
 
         thing.radius = rand(5, 15);
         thing.ttl = 60*60 * rand(1, 10);

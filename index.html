@@ -43,7 +43,7 @@
 	<canvas id="canvas"></canvas>
 
 </body>
-<script src="http://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="./vendor/d3.v4.min.js"></script>
 <script type="text/javascript" src="./Helpers.js"></script>
 <script type="text/javascript" src="./Animation.js"></script>
 <script type="text/javascript" src="./Behavior.js"></script>
@@ -67,11 +67,12 @@ window.onload = function() {
 
 
     world = new World(canvas.width, canvas.height);
-	createLifers(world, "Wolf", 20);
-	createLifers(world, "Cow", 100);
-	createLifers(world, "Grass", 150);
+	createLifers(world, "Wolf", 5);
+	createLifers(world, "Cow", 10);
+	createLifers(world, "Grass", 20);
+	createLifers(world, "Ghost", 10);
 
-    createRandomLifers(world, 100);
+    // createRandomLifers(world, 100);
 
     let fps = 60;
     let start = Date.now();
@@ -95,7 +96,7 @@ window.onload = function() {
             world.update(now-start);
             world.draw(context);
 
-            if (Math.random() > 0.5) {
+            if (Math.random() > 0.9) {
                 createLifers(world, "Grass", 1);
 			}
 
