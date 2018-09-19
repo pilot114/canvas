@@ -1,27 +1,21 @@
-let data;
-
-let n,svg;
-let xAxis,yAxis;
-
 function graphInit() {
-    data = world.getCounts();
-
-    // срез данных для отображения
-    n = 300;
+    // по x - 300 отсчетов по 60 миллисекунд
+    let n = 300;
+    let dt = 60;
 
     //добавляем svg
-    svg = d3.select("svg"),
+    let svg = d3.select("svg"),
         margin = {top: 10, right: 10, bottom: 20, left: 40},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // добавляем шкалу к осям
-    xAxis = d3.scaleLinear()
+    let xAxis = d3.scaleLinear()
         .domain([0, n - 1])
         .range([0, width]);
 
-    yAxis = d3.scaleLinear()
+    let yAxis = d3.scaleLinear()
         .domain([0, world.maxCounts()])
         .range([height, 0]);
 
@@ -42,64 +36,60 @@ function graphInit() {
         .attr("class", "axis axis--y")
         .call(d3.axisLeft(yAxis));
 
-    let dt = 60;
+    for (let name in world.getCounts()) {
+        let obj = new window[name](0, 0);
 
-    for (let name in data) {
-        data[name] = {
-            obj: new window[name](0, 0),
-            data: d3.range(n).map(function(){ return 0; }),
-            // d - это значение, i - время (т.е. тики)
-            // получается по x выводим время, по y - значение
-            line: d3.line().x(function(d, i) { return xAxis(i); }).y(function(d, i) { return yAxis(d); })
-        };
-
-        // добавляем линии на график
-        g.append("g")
-            .attr("clip-path", "url(#clip)")
-            .append("path")
-            .datum(data[name].data)
-            .style("stroke", function(d) { return d.color = data[name].obj.color; })
-            .attr("class", "line")
-            .transition()
-            .duration(dt)
-            .ease(d3.easeLinear)
-            .on("start", tick(data[name]));
+        init(obj, {
+            dt: dt,
+            n: n,
+            g: g,
+            width: width,
+            height: height,
+            xAxis: xAxis,
+            yAxis: yAxis
+        });
     }
 }
 
-// TODO: сделать динамический вывод графиков
-function tick(obj) {
+function init(obj, conf) {
 
-    // добавляем новые данные
-    if (obj.count) {
-        obj.data.push(obj.count);
-    } else {
-        obj.data.push(0);
-    }
+    let data = d3.range(conf.n).map(function(){ return 0; });
 
-    console.log(obj);
+    // d - это значение, i - время (т.е. тики)
+    // получается по x выводим время, по y - значение
+    let line = d3.line().x(function (d, i) { return conf.xAxis(i); }).y(function (d, i) { return conf.yAxis(d); });
 
-    let x = function(){return 123};
-    x.setAttribute = 234;
-
-    d3.select(obj.data)
-        .attr("d", x)
-        .attr("transform", null);
-
-    // старые данные удаляем
-    obj.data.shift();
-
-    return;
-
-        d3.select(this)
-        .attr("d", obj.line)
-        .attr("transform", null);
-
-    d3.active(this)
-        .attr("transform", "translate(" + xAxis(-1) + ",0)")
+    conf.g.append("g")
+        .attr("clip-path", "url(#clip)")
+        .append("path")
+        .datum(data)
+        .style("stroke", function (d) {
+            return d.color = obj.color;
+        })
+        .attr("class", "line")
         .transition()
-        .on("start", tick(obj));
+        .duration(conf.dt)
+        .ease(d3.easeLinear)
+        .on("start", tick);
 
-    // старые данные удаляем
-    obj.data.shift();
-};
+    function tick() {
+        // добавляем новые данные
+        if (world.getCounts()[obj.name]) {
+            data.push(world.getCounts()[obj.name]);
+        } else {
+            data.push(0);
+        }
+
+        // перерисовываем линию
+        d3.select(this)
+            .attr("d", line)
+            .attr("transform", null);
+        // сдвигаем влево
+        d3.active(this)
+            .attr("transform", "translate(" + conf.xAxis(-1) + ",0)")
+            .transition()
+            .on("start", tick);
+        // старые данные удаляем
+        data.shift();
+    }
+}

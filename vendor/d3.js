@@ -1214,9 +1214,6 @@ function attrConstantNS(fullname, value) {
 }
 
 function attrFunction(name, value) {
-  console.log(name);
-  console.log(value);
-  console.log(arguments);
   return function() {
     var v = value.apply(this, arguments);
     if (v == null) this.removeAttribute(name);
