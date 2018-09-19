@@ -46,7 +46,6 @@ function graphInit() {
 
     for (let name in data) {
         data[name] = {
-            count: data[name],
             obj: new window[name](0, 0),
             data: d3.range(n).map(function(){ return 0; }),
             // d - это значение, i - время (т.е. тики)
@@ -77,18 +76,22 @@ function tick(obj) {
     } else {
         obj.data.push(0);
     }
-    console.log(this);
 
-    // d3.select(this)
-    //     .attr("d", obj.line)
-    //     .attr("transform", null);
+    console.log(obj);
+
+    let x = function(){return 123};
+    x.setAttribute = 234;
+
+    d3.select(obj.data)
+        .attr("d", x)
+        .attr("transform", null);
 
     // старые данные удаляем
     obj.data.shift();
 
     return;
 
-    d3.select(this)
+        d3.select(this)
         .attr("d", obj.line)
         .attr("transform", null);
 
