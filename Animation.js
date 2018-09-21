@@ -6,18 +6,17 @@ function Anim(lifer, world, name, vector) {
     switch (name) {
 
         case 'random':
+            var angle = rand(0, 360);
             // для рандома удобнее сразу задавать угол
             lifer.dy = Math.sin(angle * (Math.PI / 180)) * lifer.speed;
             lifer.dx = Math.cos(angle * (Math.PI / 180)) * lifer.speed;
             break;
         // используем информацию о текущем импульсе через объект lifer: получаем и сохраняем
         case 'particle':
-            let angle = rand(0, 360);
             // если импульса нет
-            if (!lifer.hasOwnProperty('dx')) {
+            if (!lifer.hasOwnProperty('dx') && !lifer.hasOwnProperty('dy')) {
+                var angle = rand(0, 360);
                 lifer.dx = Math.cos(angle * (Math.PI / 180)) * lifer.speed;
-            }
-            if (!lifer.hasOwnProperty('dy')) {
                 lifer.dy = Math.sin(angle * (Math.PI / 180)) * lifer.speed;
             }
             break;
@@ -28,7 +27,6 @@ function Anim(lifer, world, name, vector) {
 
             // маштабируем до градусов
             let degree = world.tick % 360;
-            console.log(world.tick);
             // и переводим в радианы
             let theta = degree * (2 * Math.PI / 360);
             lifer.x = center[0] + radius * Math.cos(theta);

@@ -6,6 +6,103 @@ function Behavior(lifer, world) {
 
 	switch(lifer.behaviorName) {
 
+		case 'berserk':
+            var target = null;
+            if (nears.length > 0) {
+                var target = nears.pop();
+                for (var i = 0; i < nears.length; i++) {
+                    if (getRange(nears[i], lifer) < getRange(target, lifer)) {
+                        target = nears[i];
+                    }
+                }
+            }
+
+            // съедаем цель
+            if (target && getRange(lifer, target) < lifer.radius) {
+                world.remove(target);
+                lifer.kills += 1;
+                lifer.berserkCounter += 1;
+            }
+
+            if (target) {
+                return {AnimName: 'chase', vector: {x: target.x, y: target.y}}
+            }
+            return {AnimName: 'particle', vector: null};
+        case 'compete':
+            var danger = null;
+            var target = null;
+
+            if (nears.length > 0) {
+                var dangers = nears.filter(function(object) {
+                    return object.name === lifer.danger;
+                });
+                if (dangers.length > 0) {
+                    var danger = dangers.pop();
+                    for (var i = 0; i < dangers.length; i++) {
+                        if (getRange(dangers[i], lifer) < getRange(danger, lifer)) {
+                            danger = dangers[i];
+                        }
+                    }
+                }
+
+                var targets = nears.filter(function(object) {
+                    return object.name === lifer.target;
+                });
+                if (targets.length > 0) {
+                    var target = targets.pop();
+                    for (var i = 0; i < targets.length; i++) {
+                        if (getRange(targets[i], lifer) < getRange(target, lifer)) {
+                            target = targets[i];
+                        }
+                    }
+                }
+            }
+
+            if (world.totalTypes === 2) {
+                danger = null;
+                target = null;
+
+                var targets = nears.filter(function(object) {
+                    return object.name !== lifer.name;
+                });
+                if (targets.length > 0) {
+                    var target = targets.pop();
+                    for (var i = 0; i < targets.length; i++) {
+                        if (getRange(targets[i], lifer) < getRange(target, lifer)) {
+                            target = targets[i];
+                        }
+                    }
+                }
+                if (target) {
+                	if (target.radius > lifer.radius) {
+                        danger = target;
+					}
+                    if (target.radius === lifer.radius) {
+                        danger = null;
+                        target = null;
+                    }
+				}
+            }
+
+            // съедаем цель
+            if (target && getRange(lifer, target) < lifer.radius) {
+                world.remove(target);
+                lifer.radius += 1;
+                lifer.radiusView += 1;
+                lifer.speed += 0.1;
+                lifer.kills += 1;
+                lifer.berserkCounter += 1;
+            }
+
+            if (danger) {
+                return {AnimName: 'escape', vector: {x: danger.x, y: danger.y}}
+            } else {
+                // бежим за целью
+                if (target) {
+                    return {AnimName: 'chase', vector: {x: target.x, y: target.y}}
+                }
+                return {AnimName: 'particle', vector: null}
+            }
 		case 'herbivore':
 			var nearestWolf = null;
 			var nearestGrass = null;

@@ -9,6 +9,8 @@ function World(width, height) {
 	this.nextId = 1;
 	this.select = null;
 
+	this.totalTypes;
+
 	this.add = function(object) {
 		object.id = this.nextId;
 		this.state.push(object);
@@ -98,6 +100,9 @@ function World(width, height) {
 			}
 			counts[name]++;
 		}
+
+		this.totalTypes = Object.keys(counts).length;
+
 		return counts;
 	}
 

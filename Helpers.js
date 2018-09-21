@@ -33,8 +33,7 @@ function createRandomLifers(world, count) {
         let coords = randCoords();
         let color = rand(['yellow', 'blue', 'red', 'black']);
 
-        // берём корову как шаблон
-        let thing = new Cow(coords[0], coords[1]);
+        let thing = new Base(coords[0], coords[1]);
         thing.name = "Random";
 
         thing.radius = rand(5, 15);
@@ -45,7 +44,6 @@ function createRandomLifers(world, count) {
             drawCircle(context, thing, color);
         };
         this.update = function(world) {
-            this.radius = 10;
             let beh = Behavior(this, world);
             Anim(this, world, beh.AnimName, beh.vector);
 
