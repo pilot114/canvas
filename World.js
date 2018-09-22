@@ -9,7 +9,8 @@ function World(width, height) {
 	this.nextId = 1;
 	this.select = null;
 
-	this.totalTypes;
+	this.totalTypes = 0;
+	this.stopped = false;
 
 	this.add = function(object) {
 		object.id = this.nextId;
@@ -60,7 +61,7 @@ function World(width, height) {
 		let log = [];
 
 		for (let i = 0; i < this.state.length; i++) {
-			this.state[i].update(this); //  ага! при обновлении меняется this.state.length!!!
+			this.state[i].update(this);
 
             if (this.tick % 10 === 0) {
 				//  т.к. локальный update может удалять элементы из state, обработаем такой случай
@@ -104,7 +105,7 @@ function World(width, height) {
 		this.totalTypes = Object.keys(counts).length;
 
 		return counts;
-	}
+	};
 
     this.maxCounts = function() {
 		let max = 0;
@@ -115,5 +116,5 @@ function World(width, height) {
             }
         }
         return max;
-	}
+	};
 }

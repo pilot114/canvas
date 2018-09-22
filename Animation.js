@@ -3,6 +3,16 @@
 function Anim(lifer, world, name, vector) {
     // обычно dx и dy высчитываем из вектора
 
+    // физическое ограничение - нельзя сильно накладывать объекты друг на друга
+    var nears = world.getNear(lifer);
+    if (nears.length > 0) {
+        var nearest = getNearest(nears, lifer);
+        if (getRange(nearest, lifer) < lifer.radius) {
+            name = 'escape';
+            vector = {x: nearest.x, y: nearest.y};
+        }
+    }
+
     switch (name) {
 
         case 'random':

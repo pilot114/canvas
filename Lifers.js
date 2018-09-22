@@ -114,7 +114,7 @@ function Wolf(x, y) {
     return base;
 }
 
-function Template(x, y) {
+function Unit(x, y) {
     let base = new Base(x, y);
     base.behaviorName = 'compete';
 
@@ -128,7 +128,7 @@ function Template(x, y) {
 
     base.draw = function(context) {
         drawCircle(context, this, this.color);
-        drawViewCircle(context, this);
+        // drawViewCircle(context, this);
     };
 
     base.update = function(world) {
@@ -139,7 +139,7 @@ function Template(x, y) {
             world.remove(this);
         }
 
-        // если более 4 киллов за 20 сек - входим в режим берсерк
+        // если более 4 киллов за 20 сек - входим в режим берсерк на 5 сек
         if (this.berserkCounter > 4 && base.berserkTtl === 0) {
             base.color = 'black';
             // 300 = 60fps * 5sec
@@ -167,35 +167,35 @@ function Template(x, y) {
 }
 
 
-function Terran(x, y) {
-    let template = new Template(x, y);
-    template.name = 'Terran';
-    template.color = 'green';
+function Green(x, y) {
+    let unit = new Unit(x, y);
+    unit.name = 'Green';
+    unit.color = 'green';
 
-    template.danger = 'Zerg';
-    template.target = 'Protoss';
+    unit.danger = 'Red';
+    unit.target = 'Blue';
 
-    return template;
+    return unit;
 }
 
-function Zerg(x, y) {
-    let template = new Template(x, y);
-    template.name = 'Zerg';
-    template.color = 'red';
+function Red(x, y) {
+    let unit = new Unit(x, y);
+    unit.name = 'Red';
+    unit.color = 'red';
 
-    template.danger = 'Protoss';
-    template.target = 'Terran';
+    unit.danger = 'Blue';
+    unit.target = 'Green';
 
-    return template;
+    return unit;
 }
 
-function Protoss(x, y) {
-    let template = new Template(x, y);
-    template.name = 'Protoss';
-    template.color = 'blue';
+function Blue(x, y) {
+    let unit = new Unit(x, y);
+    unit.name = 'Blue';
+    unit.color = 'blue';
 
-    template.danger = 'Terran';
-    template.target = 'Zerg';
+    unit.danger = 'Green';
+    unit.target = 'Red';
 
-    return template;
+    return unit;
 }

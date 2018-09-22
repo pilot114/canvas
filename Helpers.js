@@ -1,3 +1,16 @@
+function getNearest(arr, obj) {
+    if (arr.length === 0) {
+        return null;
+    }
+    let nearest = arr.pop();
+    for (let i = 0; i < arr.length; i++) {
+        if (getRange(arr[i], obj) < getRange(nearest, obj)) {
+            nearest = arr[i];
+        }
+    }
+    return nearest;
+}
+
 function objectToString(obj) {
     let output = '';
     for (let property in obj) {
@@ -33,8 +46,7 @@ function createRandomLifers(world, count) {
         let coords = randCoords();
         let color = rand(['yellow', 'blue', 'red', 'black']);
 
-        let thing = new Base(coords[0], coords[1]);
-        thing.name = "Random";
+        let thing = new Unit(coords[0], coords[1]);
 
         thing.radius = rand(5, 15);
         thing.ttl = 60*60 * rand(1, 10);
@@ -144,80 +156,4 @@ function drawLine(context, xy, size, angle) {
     context.lineTo(xy2[0], xy2[1]);
     context.stroke();
     return xy2;
-}
-
-// examples
-function drawRect(context) {
-    context.fillStyle = 'green';
-    context.fillRect(100, 100, 200, 200);
-}
-
-function drawTriangle(context) {
-    context.fillStyle = 'yellow';
-    context.beginPath();
-    context.moveTo(50, 20);
-    context.lineTo(200, 50);
-    context.lineTo(150, 80);
-    context.closePath();
-    context.fill();
-    context.strokeStyle = 'blue';
-    context.lineWidth = 5;
-    context.stroke();
-}
-
-function drawCurve(context) {
-    context.fillStyle = 'red';
-    context.beginPath();
-    context.moveTo(200, 300);
-    context.bezierCurveTo(50, 90, 159, -30, 200, 30);
-    context.lineTo(200, 90);
-    context.lineTo(10, 90);
-    context.closePath();
-    context.fill();
-    context.lineWidth = 4;
-    context.strokeStyle = 'black';
-    context.stroke();
-}
-
-function drawText(context) {
-    context.fillStyle = "black";
-    context.font = "italic " + 96 + "pt Arial";
-    context.fillText("this is text", 20, 150);
-}
-
-function drawGradient(context) {
-    var gradient = context.createLinearGradient(0, 0, 200, 0);
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(0.5, "red");
-    gradient.addColorStop(1, "black");
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 400, 200);
-}
-
-function drawPixels(context) {
-    // создаём новый буфер 300x200 пикселей
-    let data = context.createImageData(300, 200);
-
-    // обходим в цикле каждый пиксель
-    for (let x = 0; x < data.width; x++) {
-        for (let y = 0; y < data.height; y++) {
-
-            let val = 0;
-            let horz = (Math.floor(x / 4) % 2 == 0); // цикл каждые 4 пикселя
-            let vert = (Math.floor(y / 4) % 2 == 0); // цикл каждые 4 пикселя
-            if ((horz && !vert) || (!horz && vert)) {
-                val = 255;
-            } else {
-                val = 0;
-            }
-
-            let index = (y * data.width + x) * 4;  // вычисляем индекс
-            data.data[index] = val;   // красный
-            data.data[index + 1] = val; // зелёный
-            data.data[index + 2] = val; // синий
-            data.data[index + 3] = 255; // явно задаём альфу как 255
-        }
-    }
-    // устанавливаем данные обратно
-    context.putImageData(data, 0, 0);
 }

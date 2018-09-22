@@ -76,14 +76,14 @@ window.onload = function() {
     });
 
     world = new World(canvas.width, canvas.height);
-    // createLifers(world, "Grass", 40);
     // createLifers(world, "Ghost", 20);
+    // createLifers(world, "Grass", 100);
     // createLifers(world, "Cow", 100);
-    // createLifers(world, "Wolf", 15);
+    // createLifers(world, "Wolf", 10);
 
-    createLifers(world, "Terran", 100);
-    createLifers(world, "Zerg", 100);
-    createLifers(world, "Protoss", 100);
+    createLifers(world, "Red", 200);
+    createLifers(world, "Blue", 200);
+    createLifers(world, "Green", 200);
 
     // createRandomLifers(world, 100);
 
@@ -97,7 +97,9 @@ window.onload = function() {
     graphInit();
 
     (function draw() {
-	    requestAnimationFrame(draw);
+        if (!world.stopped) {
+            requestAnimationFrame(draw);
+		}
 
         now = Date.now();
         delta = now - x;
