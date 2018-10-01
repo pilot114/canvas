@@ -36,7 +36,7 @@ function Ghost(x, y) {
     let base = new Base(x, y);
 
     base.name = 'Ghost';
-    base.behaviorName = 'timid';
+    base.behavior = 'timid';
 
     base.radius = 10;
     base.radiusView = 100;
@@ -63,7 +63,7 @@ function Cow(x, y) {
     let base = new Base(x, y);
 
     base.name = 'Cow';
-    base.behaviorName = 'herbivore';
+    base.behavior = 'herbivore';
 
     base.radius = 10;
     base.radiusView = 100;
@@ -91,7 +91,7 @@ function Wolf(x, y) {
     let base = new Base(x, y);
 
     base.name = 'Wolf';
-    base.behaviorName = 'predator';
+    base.behavior = 'predator';
 
     base.radiusView = 100;
     base.ttl = 60*60;
@@ -116,7 +116,7 @@ function Wolf(x, y) {
 
 function Unit(x, y) {
     let base = new Base(x, y);
-    base.behaviorName = 'compete';
+    base.behavior = 'compete';
 
     base.radius = 10;
     base.radiusView = 100;
@@ -145,7 +145,7 @@ function Unit(x, y) {
             // 300 = 60fps * 5sec
             base.berserkTtl = 300;
             base.speed *= 1.5;
-            base.behaviorName = 'berserk';
+            base.behavior = 'berserk';
         }
         
         // 240 = 60fps * 4sec
@@ -166,36 +166,49 @@ function Unit(x, y) {
     return base;
 }
 
-
-function Green(x, y) {
+function Stone(x, y) {
     let unit = new Unit(x, y);
-    unit.name = 'Green';
-    unit.color = 'green';
+    unit.name = 'Stone';
+    unit.color = 'orange';
 
-    unit.danger = 'Red';
-    unit.target = 'Blue';
+    unit.danger = 'Paper';
+    unit.target = 'Clip';
 
     return unit;
 }
 
-function Red(x, y) {
+function Clip(x, y) {
     let unit = new Unit(x, y);
-    unit.name = 'Red';
+    unit.name = 'Clip';
     unit.color = 'red';
 
-    unit.danger = 'Blue';
-    unit.target = 'Green';
+    unit.danger = 'Stone';
+    unit.target = 'Paper';
 
     return unit;
 }
 
-function Blue(x, y) {
+function Paper(x, y) {
     let unit = new Unit(x, y);
-    unit.name = 'Blue';
+    unit.name = 'Paper';
     unit.color = 'blue';
 
-    unit.danger = 'Green';
-    unit.target = 'Red';
+    unit.danger = 'Clip';
+    unit.target = 'Stone';
 
     return unit;
+}
+
+// функция экспорта доступных моделей
+function lifersList() {
+    return [
+        'Grass',
+        'Ghost',
+        'Cow',
+        'Wolf',
+
+        'Stone',
+        'Clip',
+        'Paper',
+    ];
 }

@@ -29,12 +29,21 @@
 		#selectInfo {
 			position: absolute;
 			top: 0px;
+			left: 1350px;
+		}
+		#palette {
+			position: absolute;
+			top: 10px;
 			left: 1000px;
 		}
 		#player {
-			width: 1200px;
+			width: 1000px;
 			border: 1px solid green;
 			border-radius: 3px;
+		}
+
+		.active {
+			border: 2px solid black;
 		}
 	</style>
 </head>
@@ -47,6 +56,7 @@
 			<div id="selectInfo"></div>
 		</div>
 		<svg id="graph" width="400" height="200"></svg>
+		<div id="palette"></div>
 	</div>
 	<canvas id="canvas"></canvas>
 	<input type="range" id="player" min="0" max="1000" name="Timeline"/>
@@ -61,13 +71,14 @@
 <script type="text/javascript" src="./Graph.js"></script>
 <script type="text/javascript" src="./Memory.js"></script>
 <script type="text/javascript" src="./Player.js"></script>
+<script type="text/javascript" src="./Palette.js"></script>
 
 <script type="text/javascript">
 
 window.onload = function() {
 	let canvas = document.getElementById('canvas');
     let context = canvas.getContext('2d');
-	canvas.width = 1200;
+	canvas.width = 1000;
 	canvas.height = 500;
 
     canvas.addEventListener("click", function(event){
@@ -81,9 +92,9 @@ window.onload = function() {
     // createLifers(world, "Cow", 100);
     // createLifers(world, "Wolf", 10);
 
-    createLifers(world, "Red", 200);
-    createLifers(world, "Blue", 200);
-    createLifers(world, "Green", 200);
+    createLifers(world, "Stone", 200);
+    createLifers(world, "Clip", 200);
+    createLifers(world, "Paper", 200);
 
     // createRandomLifers(world, 100);
 
@@ -96,10 +107,15 @@ window.onload = function() {
 
     graphInit();
 
+    let palette = new Palette('palette');
+
     (function draw() {
-        if (!world.stopped) {
-            requestAnimationFrame(draw);
-		}
+        if (world.stopped) {
+            return;
+        }
+		requestAnimationFrame(draw);
+
+        console.log(palette.selected);
 
         now = Date.now();
         delta = now - x;
@@ -109,7 +125,7 @@ window.onload = function() {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
             world.update(now-start);
-            world.draw(context);
+			world.draw(context);
 
             if (Math.random() > 0.95) {
                 // createLifers(world, "Grass", 1);

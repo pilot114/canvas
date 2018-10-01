@@ -4,7 +4,7 @@
 function Behavior(lifer, world) {
 	var nears = world.getNear(lifer);
 
-	switch(lifer.behaviorName) {
+	switch(lifer.behavior) {
 
 		case 'berserk':
             var target = null;
@@ -29,7 +29,7 @@ function Behavior(lifer, world) {
 
             if (nears.length > 0) {
                 let berserk = getNearest(nears.filter(function(object) {
-                    return object.behaviorName === 'berserk';
+                    return object.behavior === 'berserk';
                 }), lifer);
                 if (berserk) {
                     return {AnimName: 'escape', vector: {x: berserk.x, y: berserk.y}}
